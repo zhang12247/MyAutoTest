@@ -7,7 +7,7 @@ class MYPost:
     def __init__(self, config_file_path):
         self.path = config_file_path
         self.cf = configparser.ConfigParser()
-        self.cf.read('config.ini')
+        self.cf.read(self.path)
 
     def get(self, field, key):
         result = ''
@@ -18,18 +18,32 @@ class MYPost:
             result = ''
         return result
 
-    def sendjson(url, jdata):
-        headers = {'Host': 'www.gtoyg.com',
-                   'Connection': 'keep-alive',
-                   'Cache-Control': 'no-cache',
-                   'Accept': 'application/json, text/javascript, */*; q=0.01',
-                   'X-Requested-With': 'XMLHttpRequest',
-                   'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
-                   'Referer': 'http://www.gtoyg.com/appfrontservice/money/index.html',
-                   'Accept-Encoding': 'gzip, deflate',
-                   'Accept-Language': 'zh-cn',
-                   'Content-Type': 'application/json',
-                   }
+    def sendjson(url, jdata, Token=''):
+        if Token == '':
+            headers = {'Host': 'www.gtoyg.com',
+                       'Connection': 'keep-alive',
+                       'Cache-Control': 'no-cache',
+                       'Accept': 'application/json, text/javascript, */*; q=0.01',
+                       'X-Requested-With': 'XMLHttpRequest',
+                       'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
+                       'Referer': 'http://www.gtoyg.com/appfrontservice/money/index.html',
+                       'Accept-Encoding': 'gzip, deflate',
+                       'Accept-Language': 'zh-cn',
+                       'Content-Type': 'application/json',
+                       }
+        else:
+            headers = {'Host': 'www.gtoyg.com',
+                       'Connection': 'keep-alive',
+                       'Cache-Control': 'no-cache',
+                       'Accept': 'application/json, text/javascript, */*; q=0.01',
+                       'X-Requested-With': 'XMLHttpRequest',
+                       'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
+                       'Referer': 'http://www.gtoyg.com/appfrontservice/money/index.html',
+                       'Accept-Encoding': 'gzip, deflate',
+                       'Accept-Language': 'zh-cn',
+                       'Content-Type': 'application/json',
+                       'access-token': Token
+                       }
         maxTryNum = 10
         for tries in range(maxTryNum):
             try:
@@ -41,10 +55,12 @@ class MYPost:
             except:
                 if (tries < (maxTryNum - 1)):
                     continue
+                else:
+                    raise '调用失败'
         return result
 
-    def postdata(self, senddata, url):
+    def postdata(self, senddata, url, Token=''):
         sendurl = MYPost.sendjson(url,
-                                  senddata)
+                                  senddata, Token)
         dictdata = json.loads(sendurl)
         return dictdata
