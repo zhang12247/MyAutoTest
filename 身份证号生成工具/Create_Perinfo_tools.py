@@ -70,7 +70,7 @@ class User_info_tool():
 if __name__ == '__main__':
     aa = User_info_tool()
     print(aa.create_UserName())
-    # for i in range(100000):
-    #     file = open('C:\\name.txt', 'a')
-    #     file.write(create_UserName() + ',' + create_Phone() + ',' + gennerator() + ',' + create_BankCard() + '\n')
-    #     file.close()
+    for i in range(100000):
+        file = open('C:\\name.txt', 'a')
+        file.write(aa.create_UserName() + ',' + aa.create_Phone() + ',' + aa.gennerator() + ',' + aa.create_BankCard() + '\n')
+        file.close()
